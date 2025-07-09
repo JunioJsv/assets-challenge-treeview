@@ -47,8 +47,8 @@
 	<true/>
 	<key>CFBundleLocalizations</key>
     <array>
-       <string>en</string>
-       <string>pt</string>
+      <string>en</string>
+      <string>pt</string>
     </array>
-</dict>
+  </dict>
 </plist>
