@@ -1,6 +1,7 @@
 import 'package:assets_challenge/dependencies.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/companies_bloc/companies_bloc.dart';
 import 'package:assets_challenge/ui/companies_assets/screens/company_assets_screen.dart';
+import 'package:assets_challenge/ui/companies_assets/widgets/companies_list_view_shimmer.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_card.dart';
 import 'package:assets_challenge/ui/core/widgets/error_state.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _CompaniesScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = dependencies<CompaniesBloc>();
+    final shimmer = CompaniesListViewShimmer();
     return BlocBuilder<CompaniesBloc, CompaniesState>(
       bloc: bloc,
       builder: (context, state) {
@@ -70,8 +72,7 @@ class _CompaniesScreenBody extends StatelessWidget {
           );
         }
 
-        // Todo replace by shimmer widget
-        return const Center(child: CircularProgressIndicator());
+        return shimmer;
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:assets_challenge/dependencies.dart';
 import 'package:assets_challenge/i18n/translations.g.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/company_assets/company_assets_bloc.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_assets_filters.dart';
+import 'package:assets_challenge/ui/companies_assets/widgets/company_assets_screen_shimmer.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_assets_tree_view.dart';
 import 'package:assets_challenge/ui/core/widgets/error_state.dart';
 import 'package:assets_challenge/utils/route_utils.dart';
@@ -60,6 +61,7 @@ class _CompanyAssetsScreenBody extends StatelessWidget {
     final bloc = dependencies<CompanyAssetsBloc>();
     final arguments = context.arguments<CompanyAssetsScreenArguments>();
     final company = arguments.company;
+    final shimmer = CompanyAssetsScreenShimmer();
     return BlocBuilder<CompanyAssetsBloc, CompanyAssetsState>(
       bloc: bloc,
       builder: (context, state) {
@@ -95,8 +97,7 @@ class _CompanyAssetsScreenBody extends StatelessWidget {
           );
         }
 
-        // Todo replace by shimmer widget
-        return const Center(child: CircularProgressIndicator());
+        return shimmer;
       },
     );
   }
