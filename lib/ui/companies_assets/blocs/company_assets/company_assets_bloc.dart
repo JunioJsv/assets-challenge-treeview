@@ -32,6 +32,8 @@ class CompanyAssetsBloc extends Bloc<CompanyAssetsEvent, CompanyAssetsState> {
     Emitter<CompanyAssetsState> emitter,
   ) async {
     try {
+      final state = this.state;
+      final filter = state is CompanyAssetsSuccessState ? state.filter : null;
       emitter(CompanyAssetsLoadingState());
       final locations = await repository.getCompanyLocations(event.companyId);
       final assets = await repository.getCompanyAssets(event.companyId);
@@ -63,7 +65,7 @@ class CompanyAssetsBloc extends Bloc<CompanyAssetsEvent, CompanyAssetsState> {
         }
       }
 
-      emitter(CompanyAssetsSuccessState(nodes: roots));
+      emitter(CompanyAssetsSuccessState(nodes: roots, filter: filter));
     } catch (e, s) {
       emitter(CompanyAssetsFailureState(message: e.toString(), stackTrace: s));
     }

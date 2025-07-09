@@ -2,5 +2,8 @@
   "assets": "Ativos",
   "searchAssets": "Buscar Ativo ou Local",
   "energySensor": "Sensor de Energia",
-  "critical": "Crítico"
+  "critical": "Crítico",
+  "unknownError": "Algo deu errado.",
+  "tryAgain": "Tentar novamente",
+  "assetsNotFound": "Nenhum ativo encontrado."
 }

@@ -25,9 +25,17 @@ class CompanyAssetsTreeView extends StatelessWidget {
       shrinkWrap: true,
       primary: level == 0,
       physics: physics,
+      findChildIndexCallback: (key) {
+        if (key is ValueKey) {
+          final index = nodes.indexWhere((node) => node.id == key.value);
+          if (index != -1) return index;
+        }
+        return null;
+      },
       itemBuilder: (context, index) {
         final node = nodes[index];
         return CompanyAssetTreeNodeTile(
+          key: ValueKey(node.id),
           node: node,
           indent: indent,
           level: level,

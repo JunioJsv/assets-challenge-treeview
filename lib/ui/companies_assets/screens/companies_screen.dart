@@ -2,6 +2,7 @@ import 'package:assets_challenge/dependencies.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/companies_bloc/companies_bloc.dart';
 import 'package:assets_challenge/ui/companies_assets/screens/company_assets_screen.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_card.dart';
+import 'package:assets_challenge/ui/core/widgets/error_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,17 +26,21 @@ class _CompaniesScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = dependencies<CompaniesBloc>();
     return BlocBuilder<CompaniesBloc, CompaniesState>(
-      bloc: dependencies(),
+      bloc: bloc,
       builder: (context, state) {
         if (state is CompaniesFailureState) {
-          // Todo replace by error widget
-          return Center(child: Text(state.message));
+          return ErrorState(
+            onRetry: () {
+              bloc.add(GetCompaniesEvent());
+            },
+          );
         }
 
         if (state is CompaniesSuccessState) {
           final companies = state.companies;
-          return ListView.separated(
+          final listview = ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 32),
             itemCount: companies.length,
             itemBuilder: (context, index) {
@@ -53,6 +58,14 @@ class _CompaniesScreenBody extends StatelessWidget {
             },
             separatorBuilder: (BuildContext context, int index) {
               return SizedBox(height: 48);
+            },
+          );
+
+          return RefreshIndicator(
+            child: listview,
+            onRefresh: () {
+              bloc.add(GetCompaniesEvent());
+              return Future.value();
             },
           );
         }

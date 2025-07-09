@@ -2,5 +2,8 @@
   "assets": "Assets",
   "searchAssets": "Search Asset or Location",
   "energySensor": "Energy Sensor",
-  "critical": "Critical"
+  "critical": "Critical",
+  "unknownError": "Something went wrong.",
+  "tryAgain": "Try again",
+  "assetsNotFound": "No assets found."
 }

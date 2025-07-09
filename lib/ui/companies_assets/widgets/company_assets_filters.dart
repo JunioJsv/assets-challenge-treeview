@@ -36,9 +36,14 @@ class _CompanyAssetsFiltersState extends State<CompanyAssetsFilters> {
       child: BlocSelector<CompanyAssetsBloc, CompanyAssetsState, String?>(
         bloc: bloc,
         selector: (state) {
-          return state is CompanyAssetsSuccessState
+          final query = state is CompanyAssetsSuccessState
               ? state.filter?.byName
               : null;
+
+          if (query != searchController.text) {
+            searchController.text = query ?? "";
+          }
+          return query;
         },
         builder: (context, query) {
           return SearchBar(

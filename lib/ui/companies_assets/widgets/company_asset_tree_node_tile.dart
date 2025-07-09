@@ -34,7 +34,7 @@ class CompanyAssetTreeNodeTile extends StatelessWidget {
               ? SizedBox(
                   width: level > 0 ? 39 : 42,
                   child: level > 0
-                      ? Divider(color: Colors.grey.shade300, thickness: 1.0)
+                      ? Container(height: 1, color: Colors.grey.shade300)
                       : null,
                 )
               : null,
@@ -43,7 +43,15 @@ class CompanyAssetTreeNodeTile extends StatelessWidget {
             children: [
               node.icon,
               SizedBox(width: 8),
-              Expanded(child: Row(children: [Flexible(child: Text(node.name)), ?node.trailing])),
+              Expanded(
+                child: Row(
+                  children: [
+                    Flexible(child: Text(node.name)),
+                    ?node.trailing,
+                  ],
+                ),
+              ),
+              SizedBox(width: 8),
             ],
           ),
           controlAffinity: ListTileControlAffinity.leading,

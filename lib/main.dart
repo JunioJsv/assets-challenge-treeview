@@ -4,6 +4,7 @@ import 'package:assets_challenge/routes.dart';
 import 'package:assets_challenge/ui/companies_assets/screens/companies_screen.dart';
 import 'package:assets_challenge/ui/core/themes/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
@@ -23,6 +24,10 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     dependencies.initialize();
   }
 

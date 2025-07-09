@@ -4,6 +4,7 @@ import 'package:assets_challenge/i18n/translations.g.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/company_assets/company_assets_bloc.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_assets_filters.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_assets_tree_view.dart';
+import 'package:assets_challenge/ui/core/widgets/error_state.dart';
 import 'package:assets_challenge/utils/route_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,20 +56,41 @@ class _CompanyAssetsScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translations = context.translations;
+    final bloc = dependencies<CompanyAssetsBloc>();
+    final arguments = context.arguments<CompanyAssetsScreenArguments>();
+    final company = arguments.company;
     return BlocBuilder<CompanyAssetsBloc, CompanyAssetsState>(
-      bloc: dependencies(),
+      bloc: bloc,
       builder: (context, state) {
         if (state is CompanyAssetsFailureState) {
-          // Todo replace by error widget
-          return Center(child: Text(state.message));
+          return ErrorState(
+            onRetry: () {
+              bloc.add(GetCompanyAssetsEvent(company.id));
+            },
+          );
         }
 
         if (state is CompanyAssetsSuccessState) {
+          var assets = Expanded(
+            child: state.nodes.isEmpty
+                ? ErrorState(
+                    message: translations.assetsNotFound,
+                    icon: Icons.search_off,
+                  )
+                : RefreshIndicator(
+                    onRefresh: () {
+                      bloc.add(GetCompanyAssetsEvent(company.id));
+                      return Future.value();
+                    },
+                    child: CompanyAssetsTreeView(nodes: state.nodes),
+                  ),
+          );
           return Column(
             children: [
               CompanyAssetsFilters(),
               Divider(color: Colors.grey.shade300, thickness: 1.0),
-              Expanded(child: CompanyAssetsTreeView(nodes: state.nodes)),
+              assets,
             ],
           );
         }
