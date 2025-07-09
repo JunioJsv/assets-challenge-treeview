@@ -2,6 +2,7 @@ import 'package:assets_challenge/data/models/companies_assets/company.dart';
 import 'package:assets_challenge/dependencies.dart';
 import 'package:assets_challenge/i18n/translations.g.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/company_assets/company_assets_bloc.dart';
+import 'package:assets_challenge/ui/companies_assets/widgets/company_assets_tree_view.dart';
 import 'package:assets_challenge/utils/route_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +57,17 @@ class _CompanyAssetsScreenBody extends StatelessWidget {
     return BlocBuilder<CompanyAssetsBloc, CompanyAssetsState>(
       bloc: dependencies(),
       builder: (context, state) {
-        return Placeholder();
+        if (state is CompanyAssetsFailureState) {
+          // Todo replace by error widget
+          return Center(child: Text(state.message));
+        }
+
+        if (state is CompanyAssetsSuccessState) {
+          return CompanyAssetsTreeView(nodes: state.nodes);
+        }
+
+        // Todo replace by shimmer widget
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

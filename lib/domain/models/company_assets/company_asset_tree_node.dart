@@ -9,16 +9,11 @@ sealed class CompanyAssetTreeNode {
 
   final String? parentId;
 
-  final List<CompanyAssetTreeNode> children;
+  final List<CompanyAssetTreeNode> children = [];
 
   Widget get icon;
 
-  const CompanyAssetTreeNode({
-    required this.id,
-    required this.name,
-    this.parentId,
-    this.children = const [],
-  });
+  CompanyAssetTreeNode({required this.id, required this.name, this.parentId});
 }
 
 class LocationTreeNode extends CompanyAssetTreeNode {
