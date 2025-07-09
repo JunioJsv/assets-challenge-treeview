@@ -14,13 +14,103 @@ class CompanyAssetsLoadingState extends CompanyAssetsState {
   List<Object> get props => [];
 }
 
-class CompanyAssetsSuccessState extends CompanyAssetsState {
-  final List<CompanyAssetTreeNode> nodes;
+class CompanyAssetsFilter extends Equatable {
+  final String? byName;
+  final SensorType? bySensorType;
+  final SensorStatus? bySensorStatus;
 
-  const CompanyAssetsSuccessState(this.nodes);
+  const CompanyAssetsFilter({
+    this.byName,
+    this.bySensorType,
+    this.bySensorStatus,
+  });
+
+  bool matches(CompanyAssetTreeNode node) {
+    if (byName != null &&
+        !node.name.toLowerCase().contains(byName!.toLowerCase())) {
+      return false;
+    }
+    if (bySensorType != null &&
+        node is ComponentTreeNode &&
+        node.sensorType != bySensorType) {
+      return false;
+    }
+    if (bySensorStatus != null &&
+        node is ComponentTreeNode &&
+        node.sensorStatus != bySensorStatus) {
+      return false;
+    }
+    return true;
+  }
+
+  CompanyAssetsFilter copyWith({
+    Nullable<String>? byName,
+    Nullable<SensorType>? bySensorType,
+    Nullable<SensorStatus>? bySensorStatus,
+  }) {
+    return CompanyAssetsFilter(
+      byName: byName != null ? byName.value : this.byName,
+      bySensorType: bySensorType != null
+          ? bySensorType.value
+          : this.bySensorType,
+      bySensorStatus: bySensorStatus != null
+          ? bySensorStatus.value
+          : this.bySensorStatus,
+    );
+  }
 
   @override
-  List<Object> get props => [nodes];
+  List<Object?> get props => [byName, bySensorType, bySensorStatus];
+}
+
+class CompanyAssetsSuccessState extends CompanyAssetsState {
+  final List<CompanyAssetTreeNode> _nodes;
+  final CompanyAssetsFilter? filter;
+
+  CompanyAssetsSuccessState({
+    required List<CompanyAssetTreeNode> nodes,
+    this.filter,
+  }) : _nodes = nodes;
+
+  List<CompanyAssetTreeNode> _getFilteredNodes(
+    List<CompanyAssetTreeNode> nodes,
+    bool Function(CompanyAssetTreeNode) match,
+  ) {
+    List<CompanyAssetTreeNode> filtered = [];
+
+    for (final node in nodes) {
+      final filteredChildren = _getFilteredNodes(node.children, match);
+
+      if (match(node) || filteredChildren.isNotEmpty) {
+        final newNode = node.cloneWithoutChildren()
+          ..children.addAll(filteredChildren);
+        filtered.add(newNode);
+      }
+    }
+
+    return filtered;
+  }
+
+  late final List<CompanyAssetTreeNode> nodes = () {
+    final filter = this.filter;
+    if (filter == null) {
+      return _nodes;
+    }
+    return _getFilteredNodes(_nodes, (node) => filter.matches(node));
+  }();
+
+  CompanyAssetsSuccessState copyWith({
+    List<CompanyAssetTreeNode>? nodes,
+    Nullable<CompanyAssetsFilter>? filter,
+  }) {
+    return CompanyAssetsSuccessState(
+      nodes: nodes ?? _nodes,
+      filter: filter != null ? filter.value : this.filter,
+    );
+  }
+
+  @override
+  List<Object?> get props => [_nodes, filter];
 }
 
 class CompanyAssetsFailureState extends CompanyAssetsState {

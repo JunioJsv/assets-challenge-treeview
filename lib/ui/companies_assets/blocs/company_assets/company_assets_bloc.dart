@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:assets_challenge/data/models/companies_assets/sensor_status.dart';
+import 'package:assets_challenge/data/models/companies_assets/sensor_type.dart';
 import 'package:assets_challenge/data/repositories/companies_assets/icompanies_assets_repository.dart';
 import 'package:assets_challenge/domain/models/company_assets/company_asset_tree_node.dart';
+import 'package:assets_challenge/utils/nullable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'company_assets_event.dart';
 
@@ -15,6 +19,12 @@ class CompanyAssetsBloc extends Bloc<CompanyAssetsEvent, CompanyAssetsState> {
   CompanyAssetsBloc({required this.repository})
     : super(CompanyAssetsInitial()) {
     on<GetCompanyAssetsEvent>(_onGetCompanyAssetsEvent);
+    on<FilterCompanyAssetsEvent>(
+      _onFilterCompanyAssetsEvent,
+      transformer: (events, mapper) {
+        return events.debounceTime(Duration(milliseconds: 500)).flatMap(mapper);
+      },
+    );
   }
 
   FutureOr<void> _onGetCompanyAssetsEvent(
@@ -53,9 +63,22 @@ class CompanyAssetsBloc extends Bloc<CompanyAssetsEvent, CompanyAssetsState> {
         }
       }
 
-      emitter(CompanyAssetsSuccessState(roots));
+      emitter(CompanyAssetsSuccessState(nodes: roots));
     } catch (e, s) {
       emitter(CompanyAssetsFailureState(message: e.toString(), stackTrace: s));
     }
+  }
+
+  FutureOr<void> _onFilterCompanyAssetsEvent(
+    FilterCompanyAssetsEvent event,
+    Emitter<CompanyAssetsState> emitter,
+  ) async {
+    try {
+      final state = this.state;
+      if (state is CompanyAssetsSuccessState) {
+        final filter = event.filter(state.filter ?? CompanyAssetsFilter());
+        emitter(state.copyWith(filter: Nullable(filter)));
+      }
+    } catch (e, s) {}
   }
 }

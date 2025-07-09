@@ -15,6 +15,8 @@ sealed class CompanyAssetTreeNode {
 
   Widget? get trailing;
 
+  CompanyAssetTreeNode cloneWithoutChildren();
+
   CompanyAssetTreeNode({required this.id, required this.name, this.parentId});
 }
 
@@ -26,6 +28,11 @@ class LocationTreeNode extends CompanyAssetTreeNode {
 
   @override
   Widget? get trailing => null;
+
+  @override
+  CompanyAssetTreeNode cloneWithoutChildren() {
+    return LocationTreeNode(id: id, name: name, parentId: parentId);
+  }
 }
 
 class AssetTreeNode extends CompanyAssetTreeNode {
@@ -43,6 +50,16 @@ class AssetTreeNode extends CompanyAssetTreeNode {
 
   @override
   Widget? get trailing => null;
+
+  @override
+  CompanyAssetTreeNode cloneWithoutChildren() {
+    return AssetTreeNode(
+      id: id,
+      name: name,
+      parentId: parentId,
+      locationId: locationId,
+    );
+  }
 }
 
 class ComponentTreeNode extends CompanyAssetTreeNode {
@@ -78,5 +95,17 @@ class ComponentTreeNode extends CompanyAssetTreeNode {
     }
 
     return null;
+  }
+
+  @override
+  CompanyAssetTreeNode cloneWithoutChildren() {
+    return ComponentTreeNode(
+      id: id,
+      name: name,
+      parentId: parentId,
+      locationId: locationId,
+      sensorType: sensorType,
+      sensorStatus: sensorStatus,
+    );
   }
 }

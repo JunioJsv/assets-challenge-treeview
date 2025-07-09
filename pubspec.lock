@@ -504,6 +504,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  rxdart:
+    dependency: "direct main"
+    description:
+      name: rxdart
+      sha256: "3f7cb435edd213ee1daea38026f2bd1cd5768f3f1b0fae0f6cd1c5380a091f90"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.27.0"
   shelf:
     dependency: transitive
     description:

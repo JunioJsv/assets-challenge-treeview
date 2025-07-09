@@ -16,6 +16,8 @@ ThemeData appTheme() {
     ),
     chipTheme: ChipThemeData(
       labelPadding: EdgeInsets.all(8),
+      showCheckmark: false,
+      selectedColor: AppColors.brightBlue,
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.grey.shade300, width: 1.0),
         borderRadius: BorderRadiusGeometry.circular(4),

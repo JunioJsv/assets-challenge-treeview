@@ -12,3 +12,12 @@ class GetCompanyAssetsEvent extends CompanyAssetsEvent {
   @override
   List<Object?> get props => [companyId];
 }
+
+class FilterCompanyAssetsEvent extends CompanyAssetsEvent {
+  final CompanyAssetsFilter? Function(CompanyAssetsFilter) filter;
+
+  const FilterCompanyAssetsEvent(this.filter);
+
+  @override
+  List<Object?> get props => [filter];
+}
