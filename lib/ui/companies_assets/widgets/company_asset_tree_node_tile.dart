@@ -43,7 +43,7 @@ class CompanyAssetTreeNodeTile extends StatelessWidget {
             children: [
               node.icon,
               SizedBox(width: 8),
-              Expanded(child: Text(node.name)),
+              Expanded(child: Row(children: [Flexible(child: Text(node.name)), ?node.trailing])),
             ],
           ),
           controlAffinity: ListTileControlAffinity.leading,

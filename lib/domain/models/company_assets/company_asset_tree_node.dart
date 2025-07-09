@@ -13,6 +13,8 @@ sealed class CompanyAssetTreeNode {
 
   Widget get icon;
 
+  Widget? get trailing;
+
   CompanyAssetTreeNode({required this.id, required this.name, this.parentId});
 }
 
@@ -21,6 +23,9 @@ class LocationTreeNode extends CompanyAssetTreeNode {
 
   @override
   Widget get icon => SvgPicture.asset("assets/svg/location.svg");
+
+  @override
+  Widget? get trailing => null;
 }
 
 class AssetTreeNode extends CompanyAssetTreeNode {
@@ -35,6 +40,9 @@ class AssetTreeNode extends CompanyAssetTreeNode {
 
   @override
   Widget get icon => SvgPicture.asset("assets/svg/asset.svg");
+
+  @override
+  Widget? get trailing => null;
 }
 
 class ComponentTreeNode extends CompanyAssetTreeNode {
@@ -53,4 +61,22 @@ class ComponentTreeNode extends CompanyAssetTreeNode {
 
   @override
   Widget get icon => SvgPicture.asset("assets/svg/component.svg");
+
+  @override
+  Widget? get trailing {
+    final asset = sensorStatus == SensorStatus.alert
+        ? "assets/svg/danger_ellipse.svg"
+        : sensorType == SensorType.energy
+        ? "assets/svg/bolt.svg"
+        : null;
+
+    if (asset != null) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: SvgPicture.asset(asset),
+      );
+    }
+
+    return null;
+  }
 }
