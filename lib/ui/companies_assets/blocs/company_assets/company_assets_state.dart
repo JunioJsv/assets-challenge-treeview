@@ -81,7 +81,9 @@ class CompanyAssetsSuccessState extends CompanyAssetsState {
     for (final node in nodes) {
       final filteredChildren = _getFilteredNodes(node.children, match);
 
-      if (match(node) || filteredChildren.isNotEmpty) {
+      final isComponent = node is ComponentTreeNode;
+
+      if ((isComponent && match(node)) || filteredChildren.isNotEmpty) {
         final newNode = node.cloneWithoutChildren()
           ..children.addAll(filteredChildren);
         filtered.add(newNode);
