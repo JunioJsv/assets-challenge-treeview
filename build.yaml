@@ -18,4 +18,4 @@ targets:
           field_rename: snake
         generate_for:
           include:
-            - lib/domain/models/**/*.dart
+            - lib/data/models/**/*.dart

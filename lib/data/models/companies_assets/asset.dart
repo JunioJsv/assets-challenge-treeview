@@ -1,5 +1,5 @@
-import 'package:assets_challenge/domain/models/companies_assets/sensor_status.dart';
-import 'package:assets_challenge/domain/models/companies_assets/sensor_type.dart';
+import 'package:assets_challenge/data/models/companies_assets/sensor_status.dart';
+import 'package:assets_challenge/data/models/companies_assets/sensor_type.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 

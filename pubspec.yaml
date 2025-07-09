@@ -17,6 +17,7 @@ dependencies:
   json_annotation: 4.9.0
   equatable: 2.0.7
   get_it: 8.0.3
+  flutter_svg: 2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -32,3 +33,4 @@ flutter:
     - assets/svg/asset.svg
     - assets/svg/component.svg
     - assets/svg/location.svg
+    - assets/svg/tractian.svg

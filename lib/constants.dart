@@ -1,0 +1,1 @@
+const baseApi = "https://fake-api.tractian.com";
