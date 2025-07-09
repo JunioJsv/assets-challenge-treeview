@@ -1,3 +1,6 @@
 {
-  "assets": "Ativos"
+  "assets": "Ativos",
+  "searchAssets": "Buscar Ativo ou Local",
+  "energySensor": "Sensor de Energia",
+  "critical": "Crítico"
 }

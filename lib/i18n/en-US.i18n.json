@@ -1,3 +1,6 @@
 {
-  "assets": "Assets"
+  "assets": "Assets",
+  "searchAssets": "Search Asset or Location",
+  "energySensor": "Energy Sensor",
+  "critical": "Critical"
 }

@@ -39,3 +39,5 @@ flutter:
     - assets/svg/company.svg
     - assets/svg/bolt.svg
     - assets/svg/danger_ellipse.svg
+    - assets/svg/bolt_outlined.svg
+    - assets/svg/alert_outlined.svg

@@ -40,7 +40,7 @@ class _AppState extends State<App> {
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       onGenerateRoute: onGenerateRoute,
       themeMode: ThemeMode.light,
-      theme: appTheme,
+      theme: appTheme(),
       initialRoute: CompaniesScreen.route,
     );
   }
