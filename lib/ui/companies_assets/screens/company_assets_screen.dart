@@ -74,7 +74,7 @@ class _CompanyAssetsScreenBody extends StatelessWidget {
         }
 
         if (state is CompanyAssetsSuccessState) {
-          var assets = Expanded(
+          final assets = Expanded(
             child: state.nodes.isEmpty
                 ? ErrorState(
                     message: translations.assetsNotFound,
@@ -85,7 +85,20 @@ class _CompanyAssetsScreenBody extends StatelessWidget {
                       bloc.add(GetCompanyAssetsEvent(company.id));
                       return Future.value();
                     },
-                    child: CompanyAssetsTreeView(nodes: state.nodes),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return InteractiveViewer(
+                          constrained: false,
+                          scaleEnabled: false,
+                          child: SizedBox(
+                            width:
+                                constraints.maxWidth * 1.5,
+                            height: constraints.maxHeight,
+                            child: CompanyAssetsTreeView(nodes: state.nodes),
+                          ),
+                        );
+                      },
+                    ),
                   ),
           );
           return Column(
