@@ -1,10 +1,9 @@
 import 'package:assets_challenge/domain/models/company_assets/company_asset_tree_node.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 
 import 'company_assets_tree_view.dart';
 
-class CompanyAssetTreeNodeTile extends StatefulWidget {
+class CompanyAssetTreeNodeTile extends StatelessWidget {
   final CompanyAssetTreeNode node;
   final double indent;
 
@@ -18,39 +17,22 @@ class CompanyAssetTreeNodeTile extends StatefulWidget {
   });
 
   @override
-  State<CompanyAssetTreeNodeTile> createState() =>
-      _CompanyAssetTreeNodeTileState();
-}
-
-class _CompanyAssetTreeNodeTileState extends State<CompanyAssetTreeNodeTile> {
-  final controller = ExpansibleController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final node = widget.node;
-    final level = widget.level;
-    final indent = widget.indent;
+    final theme = Theme.of(context);
     final hasChildren = node.children.isNotEmpty;
     return IgnorePointer(
       ignoring: !hasChildren,
       child: Container(
-        // color: Colors.accents.shuffled().first,
         margin: EdgeInsets.only(left: level > 0 ? indent : 0),
         decoration: BoxDecoration(
           border: Border(left: BorderSide(color: Colors.grey.shade300)),
         ),
         child: ExpansionTile(
-          controller: controller,
           tilePadding: !hasChildren ? EdgeInsets.zero : null,
+          iconColor: theme.colorScheme.secondary,
           leading: !hasChildren
               ? SizedBox(
-                  width: 32,
+                  width: level > 0 ? 39 : 42,
                   child: level > 0
                       ? Divider(color: Colors.grey.shade300, thickness: 1.0)
                       : null,
@@ -68,7 +50,6 @@ class _CompanyAssetTreeNodeTileState extends State<CompanyAssetTreeNodeTile> {
           children: [
             CompanyAssetsTreeView(
               nodes: node.children,
-              physics: NeverScrollableScrollPhysics(),
               indent: indent,
               level: level + 1,
             ),

@@ -23,6 +23,7 @@ class CompanyAssetsTreeView extends StatelessWidget {
     return ListView.builder(
       itemCount: nodes.length,
       shrinkWrap: true,
+      primary: level == 0,
       physics: physics,
       itemBuilder: (context, index) {
         final node = nodes[index];
