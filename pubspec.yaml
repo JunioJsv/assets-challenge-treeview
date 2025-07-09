@@ -18,6 +18,8 @@ dependencies:
   equatable: 2.0.7
   get_it: 8.0.3
   flutter_svg: 2.2.0
+  bloc: 9.0.0
+  flutter_bloc: 9.1.1
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +36,4 @@ flutter:
     - assets/svg/component.svg
     - assets/svg/location.svg
     - assets/svg/tractian.svg
+    - assets/svg/company.svg

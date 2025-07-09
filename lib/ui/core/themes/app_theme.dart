@@ -7,6 +7,7 @@ final appTheme = ThemeData(
     centerTitle: true,
   ),
   colorScheme: ColorScheme.light(
-    secondary: AppColors.brightBlue
+    secondary: AppColors.brightBlue,
+    onSecondary: Colors.white,
   )
 );
