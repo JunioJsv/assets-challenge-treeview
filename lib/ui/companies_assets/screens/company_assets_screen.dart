@@ -4,6 +4,7 @@ import 'package:assets_challenge/i18n/translations.g.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/company_assets/company_assets_bloc.dart';
 import 'package:assets_challenge/utils/route_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CompanyAssetsScreenArguments {
   final Company company;
@@ -26,14 +27,10 @@ class _CompanyAssetsScreenState extends State<CompanyAssetsScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      dependencies
-          .registerSingleton(
-            CompanyAssetsBloc(repository: dependencies()),
-            dispose: (bloc) => bloc.close(),
-          )
-          .add(GetCompanyAssetsEvent(arguments.company.id));
-    });
+    dependencies.registerLazySingleton(() {
+      return CompanyAssetsBloc(repository: dependencies())
+        ..add(GetCompanyAssetsEvent(arguments.company.id));
+    }, dispose: (bloc) => bloc.close());
   }
 
   @override
@@ -56,6 +53,11 @@ class _CompanyAssetsScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return BlocBuilder<CompanyAssetsBloc, CompanyAssetsState>(
+      bloc: dependencies(),
+      builder: (context, state) {
+        return Placeholder();
+      },
+    );
   }
 }

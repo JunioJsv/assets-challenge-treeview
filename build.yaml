@@ -15,7 +15,6 @@ targets:
         options:
           checked: false
           explicit_to_json: true
-          field_rename: snake
         generate_for:
           include:
             - lib/data/models/**/*.dart
