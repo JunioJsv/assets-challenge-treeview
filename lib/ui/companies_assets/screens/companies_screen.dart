@@ -1,5 +1,6 @@
 import 'package:assets_challenge/dependencies.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/companies_bloc/companies_bloc.dart';
+import 'package:assets_challenge/ui/companies_assets/screens/company_assets_screen.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,10 +15,7 @@ class CompaniesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: SvgPicture.asset("assets/svg/tractian.svg")),
-      body: MultiBlocProvider(
-        providers: [BlocProvider<CompaniesBloc>.value(value: dependencies())],
-        child: _CompaniesScreenBody(),
-      ),
+      body: _CompaniesScreenBody(),
     );
   }
 }
@@ -28,6 +26,7 @@ class _CompaniesScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CompaniesBloc, CompaniesState>(
+      bloc: dependencies(),
       builder: (context, state) {
         if (state is CompaniesFailureState) {
           // Todo replace by error widget
@@ -40,7 +39,17 @@ class _CompaniesScreenBody extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 32),
             itemCount: companies.length,
             itemBuilder: (context, index) {
-              return CompanyCard(company: companies[index]);
+              final company = companies[index];
+              return CompanyCard(
+                company: company,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    CompanyAssetsScreen.route,
+                    arguments: CompanyAssetsScreenArguments(company: company),
+                  );
+                },
+              );
             },
             separatorBuilder: (BuildContext context, int index) {
               return SizedBox(height: 48);

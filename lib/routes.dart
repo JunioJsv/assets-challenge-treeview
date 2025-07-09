@@ -1,4 +1,5 @@
 import 'package:assets_challenge/ui/companies_assets/screens/companies_screen.dart';
+import 'package:assets_challenge/ui/companies_assets/screens/company_assets_screen.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -10,4 +11,5 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
 
 final Map<String, WidgetBuilder> routes = {
   CompaniesScreen.route: (context) => CompaniesScreen(),
+  CompanyAssetsScreen.route: (context) => CompanyAssetsScreen(),
 };

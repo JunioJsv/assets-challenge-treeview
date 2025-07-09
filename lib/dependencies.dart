@@ -15,7 +15,7 @@ extension DependenciesExtension on GetIt {
     );
     dependencies.registerLazySingleton(() {
       return CompaniesBloc(repository: dependencies());
-    });
+    }, dispose: (bloc) => bloc.close());
   }
 
   void dispose() {
