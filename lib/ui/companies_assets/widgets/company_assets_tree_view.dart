@@ -37,6 +37,7 @@ class CompanyAssetsTreeView extends StatelessWidget {
         return CompanyAssetTreeNodeTile(
           key: ValueKey(node.id),
           node: node,
+          isLastNode: index == nodes.length - 1,
           indent: indent,
           level: level,
         );

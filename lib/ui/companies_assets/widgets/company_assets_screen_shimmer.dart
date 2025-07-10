@@ -54,6 +54,7 @@ class CompanyAssetsScreenShimmer extends StatelessWidget {
             id: "id",
             name: "".padLeft(Random().nextInt(10) + 5, "#"),
           ),
+          isLastNode: false,
           indent: 0,
           level: 0,
         );
