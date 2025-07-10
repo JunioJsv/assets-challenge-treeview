@@ -25,6 +25,8 @@ Este é o desafio técnico proposto para a vaga de Mobile Software Engineer, que
 
 ## 📱 Demonstração
 
+![](https://github.com/JunioJsv/juniojsv-bucket/blob/main/assets_challenge.jpg?raw=true)
+
 📺 Assista à demonstração do app: [YouTube]()
 
 ---
