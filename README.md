@@ -48,6 +48,7 @@ Este projeto utiliza Flutter. Para rodar localmente:
 
 ```bash
 flutter pub get
+dart run build_runner build
 flutter run
 ```
 
