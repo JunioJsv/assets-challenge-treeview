@@ -4,27 +4,27 @@ import 'package:assets_challenge/domain/models/company_assets/company_asset_tree
 import 'package:assets_challenge/utils/nullable.dart';
 import 'package:equatable/equatable.dart';
 
-/// Filtro aplicado na árvore de ativos:
+/// Filter applied to the asset tree:
 ///
-/// Cenários e condições:
+/// Scenarios and conditions:
 ///
-/// 1. Sem filtro:
-///    - Retorna todos os nós da árvore.
+/// 1. No filter:
+///    - Returns all nodes in the tree.
 ///
-/// 2. Filtro por nome (byName):
-///    - Busca por nome de localização, ativo ou componente.
-///    - Se o nome corresponder a uma localização e não houver filtro de sensor ativo, mantém todos os filhos dessa localização.
-///    - Se o nome corresponder a um ativo ou componente, retorna apenas os nós que correspondem ao nome.
-///    - Localizações sem filhos do tipo ativo ou componente são excluídas.
+/// 2. Name filter (`byName`):
+///    - Searches by name of location, asset, or component.
+///    - If the name matches a location or asset and no sensor filter is active, keeps all children of that location.
+///    - If the name matches an asset or component, returns only the nodes that match the name.
+///    - Locations without asset or component-type children are excluded.
 ///
-/// 3. Filtro por sensor (bySensorType ou bySensorStatus):
-///    - Filtra apenas componentes que correspondam ao tipo/status do sensor.
-///    - Localizações e ativos só são mantidos se tiverem filhos componentes que correspondam ao filtro.
-///    - Localizações sem filhos do tipo componente são excluídas.
+/// 3. Sensor filter (`bySensorType` or `bySensorStatus`):
+///    - Filters only components that match the sensor type/status.
+///    - Locations and assets are kept only if they have child components that match the filter.
+///    - Locations without component-type children are excluded.
 ///
-/// 4. Filtro combinado (byName + bySensorType/bySensorStatus):
-///    - Permite buscar pelo nome da localização, ativo ou componente.
-///    - Se o nome corresponder a uma localização, mantém apenas os filhos componentes que corresponda
+/// 4. Combined filter (`byName` + `bySensorType`/`bySensorStatus`):
+///    - Allows searching by the name of a location, asset, or component.
+///    - If the name matches a location or asset, keeps only the child components that match the filter.
 class CompanyAssetsFilter extends Equatable {
   final String? byName;
   final SensorType? bySensorType;
@@ -32,6 +32,8 @@ class CompanyAssetsFilter extends Equatable {
 
   bool get isFilteringBySensor =>
       bySensorType != null || bySensorStatus != null;
+
+  bool get isFilteringByName => byName != null && byName!.isNotEmpty;
 
   bool get isEnabled =>
       byName != null && byName!.isNotEmpty ||
@@ -45,89 +47,67 @@ class CompanyAssetsFilter extends Equatable {
   });
 
   List<CompanyAssetTreeNode> apply(List<CompanyAssetTreeNode> nodes) {
-    return _filterNodes(nodes, _matchesNode);
+    if (!isEnabled) return nodes;
+    return _filterNodes(nodes, _nodeMatches);
   }
 
-  bool _matchesNode(CompanyAssetTreeNode node) {
-    if (byName != null &&
-        !node.name.toLowerCase().contains(byName!.toLowerCase())) {
+  bool _nodeMatches(CompanyAssetTreeNode node) {
+    return _nameMatches(node) && _sensorMatches(node);
+  }
+
+  bool _nameMatches(CompanyAssetTreeNode node) {
+    final byName = this.byName;
+
+    if (byName == null || byName.isEmpty) return true;
+
+    return node.name.toLowerCase().contains(byName.toLowerCase());
+  }
+
+  bool _sensorMatches(CompanyAssetTreeNode node) {
+    final bySensorType = this.bySensorType;
+    final bySensorStatus = this.bySensorStatus;
+
+    if (node is! ComponentTreeNode) return true;
+
+    if (bySensorType != null && node.sensorType != bySensorType) return false;
+    if (bySensorStatus != null && node.sensorStatus != bySensorStatus) {
       return false;
     }
-    if (bySensorType != null &&
-        node is ComponentTreeNode &&
-        node.sensorType != bySensorType) {
-      return false;
-    }
-    if (bySensorStatus != null &&
-        node is ComponentTreeNode &&
-        node.sensorStatus != bySensorStatus) {
-      return false;
-    }
+
     return true;
   }
 
   List<CompanyAssetTreeNode> _filterNodes(
     List<CompanyAssetTreeNode> nodes,
-    bool Function(CompanyAssetTreeNode) match,
+    bool Function(CompanyAssetTreeNode) test,
   ) {
     List<CompanyAssetTreeNode> filtered = [];
-    for (final node in nodes) {
-      final isComponent = node is ComponentTreeNode;
+    for (final node in nodes.map((CompanyAssetTreeNode e) => e.clone())) {
       final isAsset = node is AssetTreeNode;
       final isLocation = node is LocationTreeNode;
 
       final locationOrAssetNameMatch =
-          (isLocation || isAsset) &&
-          byName != null &&
-          byName!.isNotEmpty &&
-          node.name.toLowerCase().contains(byName!.toLowerCase());
+          isFilteringByName && (isLocation || isAsset) && _nameMatches(node);
 
-      List<CompanyAssetTreeNode> filteredChildren;
       if (locationOrAssetNameMatch) {
         if (isFilteringBySensor) {
-          filteredChildren = _filterNodes(node.children, (child) {
-            if (child is ComponentTreeNode) {
-              if (bySensorType != null && child.sensorType != bySensorType)
-                return false;
-              if (bySensorStatus != null &&
-                  child.sensorStatus != bySensorStatus)
-                return false;
-              return true;
-            }
-            return false;
+          node.children = _filterNodes(node.children, (child) {
+            return child is ComponentTreeNode && _sensorMatches(child);
           });
-        } else {
-          // Se só está buscando por nome da localização, mantém todos os filhos sem filtrar
-          filteredChildren = node.children
-              .map((e) => e.cloneWithoutChildren()..children.addAll(e.children))
-              .toList();
         }
       } else {
-        filteredChildren = _filterNodes(node.children, match);
+        node.children = _filterNodes(node.children, test);
       }
 
-      bool keepNode = false;
-      if (isFilteringBySensor) {
-        if (isComponent && match(node)) {
-          keepNode = true;
-        } else if (locationOrAssetNameMatch && filteredChildren.isNotEmpty) {
-          keepNode = true;
-        }
-      } else {
-        if ((isComponent || isAsset || isLocation) && match(node)) {
-          keepNode = true;
-        }
-      }
-      if (filteredChildren.isNotEmpty) {
-        keepNode = true;
-      }
-      if (keepNode) {
-        final newNode = node.cloneWithoutChildren()
-          ..children.addAll(filteredChildren);
-        if (isLocation && newNode.children.isEmpty) continue;
-        if (isAsset && newNode.children.isEmpty && isFilteringBySensor)
+      bool maybeKeepNode = test(node) || node.children.isNotEmpty;
+
+      if (maybeKeepNode) {
+        if ((isLocation || isAsset) &&
+            isFilteringBySensor &&
+            node.children.isEmpty) {
           continue;
-        filtered.add(newNode);
+        }
+        filtered.add(node);
       }
     }
     return filtered;

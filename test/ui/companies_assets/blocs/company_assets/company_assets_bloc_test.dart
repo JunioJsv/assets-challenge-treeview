@@ -338,4 +338,74 @@ void main() {
       ),
     ],
   );
+
+  blocTest<CompanyAssetsBloc, CompanyAssetsState>(
+    'Search asset without children',
+    build: () => bloc,
+    act: (bloc) async {
+      bloc.add(GetCompanyAssetsEvent('1'));
+      await Future.delayed(Duration(milliseconds: 500));
+      bloc.add(
+        FilterCompanyAssetsEvent(
+          (filter) => filter.copyWith(byName: Nullable('Asset 2')),
+        ),
+      );
+    },
+    expect: () => [
+      isA<CompanyAssetsLoadingState>(),
+      isA<CompanyAssetsSuccessState>(),
+      isA<CompanyAssetsSuccessState>().having(
+        (state) {
+          final location = getNodeById(state.nodes, '13');
+          final asset = getNodeById(location.children, '5');
+
+          return state.nodes.length == 1 &&
+              location.children.length == 1 &&
+              asset.name.contains('Asset 2') &&
+              asset.children.isEmpty;
+        },
+        'Filtered nodes contain only Asset 2 without children',
+        true,
+      ),
+    ],
+  );
+
+  blocTest<CompanyAssetsBloc, CompanyAssetsState>(
+    'Search by location name and sensor status alert',
+    build: () => bloc,
+    act: (bloc) async {
+      bloc.add(GetCompanyAssetsEvent('1'));
+      await Future.delayed(Duration(milliseconds: 500));
+      bloc.add(
+        FilterCompanyAssetsEvent(
+          (filter) => filter.copyWith(
+            byName: Nullable('Location 1'),
+            bySensorStatus: Nullable(SensorStatus.alert),
+          ),
+        ),
+      );
+    },
+    expect: () => [
+      isA<CompanyAssetsLoadingState>(),
+      isA<CompanyAssetsSuccessState>(),
+      isA<CompanyAssetsSuccessState>().having(
+        (state) {
+          final location = getNodeById(state.nodes, '12');
+          final asset = getNodeById(location.children, '4');
+
+          return state.nodes.length == 1 &&
+              location.children.length == 1 &&
+              asset.name.contains('Asset 1') &&
+              asset.children.length == 2 &&
+              !asset.children.any(
+                (node) =>
+                    node is ComponentTreeNode &&
+                    node.sensorStatus != SensorStatus.alert,
+              );
+        },
+        'Filtered nodes contain only components with alert sensor status in Location 1',
+        true,
+      ),
+    ],
+  );
 }

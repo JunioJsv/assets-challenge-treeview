@@ -11,11 +11,16 @@ sealed class CompanyAssetTreeNode {
 
   final List<CompanyAssetTreeNode> children = [];
 
+  set children(List<CompanyAssetTreeNode> children) {
+    this.children.clear();
+    this.children.addAll(children);
+  }
+
   Widget get icon;
 
   Widget? get trailing;
 
-  CompanyAssetTreeNode cloneWithoutChildren();
+  CompanyAssetTreeNode clone();
 
   CompanyAssetTreeNode({required this.id, required this.name, this.parentId});
 }
@@ -30,8 +35,9 @@ class LocationTreeNode extends CompanyAssetTreeNode {
   Widget? get trailing => null;
 
   @override
-  CompanyAssetTreeNode cloneWithoutChildren() {
-    return LocationTreeNode(id: id, name: name, parentId: parentId);
+  CompanyAssetTreeNode clone() {
+    return LocationTreeNode(id: id, name: name, parentId: parentId)
+      ..children.addAll(children);
   }
 }
 
@@ -52,13 +58,13 @@ class AssetTreeNode extends CompanyAssetTreeNode {
   Widget? get trailing => null;
 
   @override
-  CompanyAssetTreeNode cloneWithoutChildren() {
+  CompanyAssetTreeNode clone() {
     return AssetTreeNode(
       id: id,
       name: name,
       parentId: parentId,
       locationId: locationId,
-    );
+    )..children.addAll(children);
   }
 }
 
@@ -98,7 +104,7 @@ class ComponentTreeNode extends CompanyAssetTreeNode {
   }
 
   @override
-  CompanyAssetTreeNode cloneWithoutChildren() {
+  CompanyAssetTreeNode clone() {
     return ComponentTreeNode(
       id: id,
       name: name,
@@ -106,6 +112,6 @@ class ComponentTreeNode extends CompanyAssetTreeNode {
       locationId: locationId,
       sensorType: sensorType,
       sensorStatus: sensorStatus,
-    );
+    )..children.addAll(children);
   }
 }

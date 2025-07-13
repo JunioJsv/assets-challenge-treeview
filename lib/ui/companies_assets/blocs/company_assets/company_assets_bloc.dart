@@ -21,7 +21,7 @@ class CompanyAssetsBloc extends Bloc<CompanyAssetsEvent, CompanyAssetsState> {
     on<FilterCompanyAssetsEvent>(
       _onFilterCompanyAssetsEvent,
       transformer: (events, mapper) {
-        return events.debounceTime(Duration(milliseconds: 500)).flatMap(mapper);
+        return events.debounceTime(Duration(milliseconds: 300)).flatMap(mapper);
       },
     );
   }
