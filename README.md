@@ -27,7 +27,7 @@ Este é o desafio técnico proposto para a vaga de Mobile Software Engineer, que
 
 ![](https://github.com/JunioJsv/juniojsv-bucket/blob/main/assets_challenge.jpg?raw=true)
 
-📺 Assista à demonstração do app: [YouTube]()
+📺 Assista à demonstração do app: [YouTube](https://youtu.be/xgFU9Uzm7LI)
 
 ---
 
@@ -48,6 +48,7 @@ Este projeto utiliza Flutter. Para rodar localmente:
 
 ```bash
 flutter pub get
+dart run build_runner build
 flutter run
 ```
 
