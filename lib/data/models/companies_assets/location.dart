@@ -10,11 +10,7 @@ class Location extends Equatable {
   final String name;
   final String? parentId;
 
-  const Location({
-    required this.id,
-    required this.name,
-    required this.parentId,
-  });
+  const Location({required this.id, required this.name, this.parentId});
 
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);

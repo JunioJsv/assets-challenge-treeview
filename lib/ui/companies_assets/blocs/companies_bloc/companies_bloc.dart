@@ -14,7 +14,6 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
 
   CompaniesBloc({required this.repository}) : super(CompaniesInitialState()) {
     on<GetCompaniesEvent>(_onGetCompaniesEvent);
-    add(GetCompaniesEvent());
   }
 
   FutureOr<void> _onGetCompaniesEvent(

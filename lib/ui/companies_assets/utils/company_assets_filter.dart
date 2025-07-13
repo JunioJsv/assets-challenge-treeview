@@ -76,14 +76,14 @@ class CompanyAssetsFilter extends Equatable {
       final isAsset = node is AssetTreeNode;
       final isLocation = node is LocationTreeNode;
 
-      final locationNameMatch =
-          isLocation &&
+      final locationOrAssetNameMatch =
+          (isLocation || isAsset) &&
           byName != null &&
           byName!.isNotEmpty &&
           node.name.toLowerCase().contains(byName!.toLowerCase());
 
       List<CompanyAssetTreeNode> filteredChildren;
-      if (locationNameMatch) {
+      if (locationOrAssetNameMatch) {
         if (isFilteringBySensor) {
           filteredChildren = _filterNodes(node.children, (child) {
             if (child is ComponentTreeNode) {
@@ -110,7 +110,7 @@ class CompanyAssetsFilter extends Equatable {
       if (isFilteringBySensor) {
         if (isComponent && match(node)) {
           keepNode = true;
-        } else if (locationNameMatch && filteredChildren.isNotEmpty) {
+        } else if (locationOrAssetNameMatch && filteredChildren.isNotEmpty) {
           keepNode = true;
         }
       } else {

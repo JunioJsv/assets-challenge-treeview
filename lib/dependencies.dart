@@ -14,7 +14,8 @@ extension DependenciesExtension on GetIt {
       CompaniesAssetsRepository(dependencies()),
     );
     dependencies.registerLazySingleton(() {
-      return CompaniesBloc(repository: dependencies());
+      return CompaniesBloc(repository: dependencies())
+        ..add(GetCompaniesEvent());
     }, dispose: (bloc) => bloc.close());
   }
 
