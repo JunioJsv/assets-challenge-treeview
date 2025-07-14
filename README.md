@@ -56,7 +56,6 @@ flutter run
 
 ## 🔎 O que eu faria com mais tempo
 
-- Implementaria **testes unitários e de integração**, especialmente para a lógica de montagem da árvore e aplicação dos filtros, garantindo mais segurança e previsibilidade ao comportamento da estrutura hierárquica.
 - Utilizaria **isolates (multithreading)** para realizar a filtragem da árvore em paralelo, melhorando a performance perceptível em cenários com grandes volumes de dados.
 - Refatoraria os widgets responsáveis pela exibição da árvore para que sejam **independentes do domínio específico de ativos**, permitindo reutilizá-los em outras áreas da aplicação.
 - Melhoraria o **feedback ao usuário**, com mensagens de erro mais claras e amigáveis.
