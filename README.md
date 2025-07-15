@@ -27,7 +27,7 @@ Este é o desafio técnico proposto para a vaga de Mobile Software Engineer, que
 
 ![](https://github.com/JunioJsv/juniojsv-bucket/blob/main/assets_challenge.jpg?raw=true)
 
-📺 Assista à demonstração do app: [YouTube](https://youtu.be/xgFU9Uzm7LI)
+📺 Assista à demonstração do app: [LinkedIn](https://www.linkedin.com/posts/juniojsv_flutter-mobiledevelopment-flutterdev-activity-7350498397419720705-Rfew?utm_source=share&utm_medium=member_desktop&rcm=ACoAADFBILoBE4SfR_jQMM-3If73KTcx9rML8Js)
 
 ---
 
