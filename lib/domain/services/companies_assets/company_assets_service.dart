@@ -23,13 +23,7 @@ class CompanyAssetsService implements ICompanyAssetsService {
     final List<CompanyAssetTreeNode> roots = [];
 
     for (final node in nodes.values) {
-      final locationId = switch (node) {
-        AssetTreeNode() => node.locationId,
-        ComponentTreeNode() => node.locationId,
-        _ => null,
-      };
-
-      final parentId = node.parentId ?? locationId;
+      final parentId = node.parentId;
 
       if (parentId != null && nodes.containsKey(node.id)) {
         nodes[parentId]!.children.add(node);

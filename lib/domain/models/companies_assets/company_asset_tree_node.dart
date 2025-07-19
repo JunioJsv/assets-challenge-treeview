@@ -47,9 +47,9 @@ class AssetTreeNode extends CompanyAssetTreeNode {
   AssetTreeNode({
     required super.id,
     required super.name,
-    super.parentId,
+    String? parentId,
     this.locationId,
-  });
+  }) : super(parentId: parentId ?? locationId);
 
   @override
   Widget get icon => SvgPicture.asset("assets/svg/asset.svg");
@@ -76,11 +76,11 @@ class ComponentTreeNode extends CompanyAssetTreeNode {
   ComponentTreeNode({
     required super.id,
     required super.name,
-    super.parentId,
+    String? parentId,
     this.locationId,
     required this.sensorType,
     this.sensorStatus,
-  });
+  }) : super(parentId: parentId ?? locationId);
 
   @override
   Widget get icon => SvgPicture.asset("assets/svg/component.svg");
