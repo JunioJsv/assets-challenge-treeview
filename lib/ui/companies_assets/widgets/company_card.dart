@@ -1,4 +1,4 @@
-import 'package:assets_challenge/data/models/companies_assets/company.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

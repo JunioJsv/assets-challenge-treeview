@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:assets_challenge/data/models/companies_assets/company.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_card.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';

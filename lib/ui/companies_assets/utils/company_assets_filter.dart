@@ -1,6 +1,6 @@
 import 'package:assets_challenge/data/models/companies_assets/sensor_status.dart';
 import 'package:assets_challenge/data/models/companies_assets/sensor_type.dart';
-import 'package:assets_challenge/domain/models/company_assets/company_asset_tree_node.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company_asset_tree_node.dart';
 import 'package:assets_challenge/utils/nullable.dart';
 import 'package:equatable/equatable.dart';
 

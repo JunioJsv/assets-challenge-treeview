@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:assets_challenge/data/repositories/companies_assets/icompanies_assets_repository.dart';
-import 'package:assets_challenge/domain/models/company_assets/company_asset_tree_node.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company_asset_tree_node.dart';
+import 'package:assets_challenge/domain/services/companies_assets/icompany_assets_service.dart';
 import 'package:assets_challenge/ui/companies_assets/utils/company_assets_filter.dart';
 import 'package:assets_challenge/utils/nullable.dart';
 import 'package:bloc/bloc.dart';
@@ -13,10 +13,9 @@ part 'company_assets_event.dart';
 part 'company_assets_state.dart';
 
 class CompanyAssetsBloc extends Bloc<CompanyAssetsEvent, CompanyAssetsState> {
-  final ICompaniesAssetsRepository repository;
+  final ICompanyAssetsService service;
 
-  CompanyAssetsBloc({required this.repository})
-    : super(CompanyAssetsInitial()) {
+  CompanyAssetsBloc({required this.service}) : super(CompanyAssetsInitial()) {
     on<GetCompanyAssetsEvent>(_onGetCompanyAssetsEvent);
     on<FilterCompanyAssetsEvent>(
       _onFilterCompanyAssetsEvent,
@@ -34,35 +33,8 @@ class CompanyAssetsBloc extends Bloc<CompanyAssetsEvent, CompanyAssetsState> {
       final state = this.state;
       final filter = state is CompanyAssetsSuccessState ? state.filter : null;
       emitter(CompanyAssetsLoadingState());
-      final locations = await repository.getCompanyLocations(event.companyId);
-      final assets = await repository.getCompanyAssets(event.companyId);
 
-      final nodes = Map.fromEntries(
-        [
-          ...locations.map((location) => location.toTreeNode()),
-          ...assets.map((asset) => asset.toTreeNode()),
-        ].map((node) {
-          return MapEntry(node.id, node);
-        }),
-      );
-
-      final List<CompanyAssetTreeNode> roots = [];
-
-      for (final node in nodes.values) {
-        final locationId = switch (node) {
-          AssetTreeNode() => node.locationId,
-          ComponentTreeNode() => node.locationId,
-          _ => null,
-        };
-
-        final parentId = node.parentId ?? locationId;
-
-        if (parentId != null && nodes.containsKey(node.id)) {
-          nodes[parentId]!.children.add(node);
-        } else {
-          roots.add(node);
-        }
-      }
+      final roots = await service.getAssetsTreeNodes(event.companyId);
 
       emitter(CompanyAssetsSuccessState(nodes: roots, filter: filter));
     } catch (e, s) {

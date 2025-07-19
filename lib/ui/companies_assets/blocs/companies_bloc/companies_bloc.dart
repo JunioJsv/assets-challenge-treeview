@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:assets_challenge/data/models/companies_assets/company.dart';
-import 'package:assets_challenge/data/repositories/companies_assets/icompanies_assets_repository.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company.dart';
+import 'package:assets_challenge/domain/repositories/companies_assets/icompanies_assets_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company.dart'
+    as domain;
 
 part 'company.g.dart';
 
@@ -14,6 +16,8 @@ class Company extends Equatable {
       _$CompanyFromJson(json);
 
   Map<String, dynamic> toJson() => _$CompanyToJson(this);
+
+  domain.Company toDomain() => domain.Company(id: id, name: name);
 
   @override
   List<Object?> get props => [id, name];

@@ -1,4 +1,4 @@
-import 'package:assets_challenge/domain/models/company_assets/company_asset_tree_node.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company_asset_tree_node.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -17,7 +17,7 @@ class Location extends Equatable {
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
-  CompanyAssetTreeNode toTreeNode() =>
+  LocationTreeNode toTreeNode() =>
       LocationTreeNode(id: id, name: name, parentId: parentId);
 
   @override

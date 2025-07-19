@@ -1,17 +1,20 @@
 import 'package:assets_challenge/data/models/companies_assets/sensor_status.dart';
 import 'package:assets_challenge/data/models/companies_assets/sensor_type.dart';
-import 'package:assets_challenge/domain/models/company_assets/company_asset_tree_node.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company_asset_tree_node.dart';
+import 'package:assets_challenge/domain/services/companies_assets/company_assets_service.dart';
+import 'package:assets_challenge/domain/services/companies_assets/icompany_assets_service.dart';
 import 'package:assets_challenge/utils/nullable.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/company_assets/company_assets_bloc.dart';
-import 'package:assets_challenge/data/repositories/companies_assets/icompanies_assets_repository.dart';
+import 'package:assets_challenge/domain/repositories/companies_assets/icompanies_assets_repository.dart';
 
 import '../../../../data/repositories/companies_assets/mock_companies_assets_repository.dart';
 
 void main() {
   late CompanyAssetsBloc bloc;
   late ICompaniesAssetsRepository repository;
+  late ICompanyAssetsService service;
 
   CompanyAssetTreeNode getNodeById(
     List<CompanyAssetTreeNode> nodes,
@@ -22,7 +25,8 @@ void main() {
 
   setUp(() {
     repository = MockCompaniesAssetsRepository();
-    bloc = CompanyAssetsBloc(repository: repository);
+    service = CompanyAssetsService(repository);
+    bloc = CompanyAssetsBloc(service: service);
   });
 
   test('Initial state is CompanyAssetsInitial', () {

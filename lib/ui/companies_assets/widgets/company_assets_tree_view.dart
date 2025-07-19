@@ -1,4 +1,4 @@
-import 'package:assets_challenge/domain/models/company_assets/company_asset_tree_node.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company_asset_tree_node.dart';
 import 'package:assets_challenge/ui/companies_assets/widgets/company_asset_tree_node_tile.dart';
 import 'package:flutter/material.dart';
 

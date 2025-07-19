@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/companies_bloc/companies_bloc.dart';
-import 'package:assets_challenge/data/repositories/companies_assets/icompanies_assets_repository.dart';
+import 'package:assets_challenge/domain/repositories/companies_assets/icompanies_assets_repository.dart';
 
 import '../../../../data/repositories/companies_assets/mock_companies_assets_repository.dart';
 

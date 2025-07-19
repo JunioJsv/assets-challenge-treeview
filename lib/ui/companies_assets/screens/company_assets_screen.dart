@@ -1,4 +1,4 @@
-import 'package:assets_challenge/data/models/companies_assets/company.dart';
+import 'package:assets_challenge/domain/models/companies_assets/company.dart';
 import 'package:assets_challenge/dependencies.dart';
 import 'package:assets_challenge/i18n/translations.g.dart';
 import 'package:assets_challenge/ui/companies_assets/blocs/company_assets/company_assets_bloc.dart';
@@ -32,7 +32,7 @@ class _CompanyAssetsScreenState extends State<CompanyAssetsScreen> {
   void initState() {
     super.initState();
     dependencies.registerLazySingleton(() {
-      return CompanyAssetsBloc(repository: dependencies())
+      return CompanyAssetsBloc(service: dependencies())
         ..add(GetCompanyAssetsEvent(arguments.company.id));
     }, dispose: (bloc) => bloc.close());
   }
@@ -91,8 +91,7 @@ class _CompanyAssetsScreenBody extends StatelessWidget {
                           constrained: false,
                           scaleEnabled: false,
                           child: SizedBox(
-                            width:
-                                constraints.maxWidth * 1.5,
+                            width: constraints.maxWidth * 1.5,
                             height: constraints.maxHeight,
                             child: CompanyAssetsTreeView(nodes: state.nodes),
                           ),
